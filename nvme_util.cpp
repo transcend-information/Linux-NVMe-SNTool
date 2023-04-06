@@ -39,14 +39,7 @@ int nvme_Device::nvmeOpen()
         m_fd = ::open(m_info.dev_name.c_str(), m_retry_flags);
 
     if (m_fd < 0) {
-        //QMessageBox::information(NULL, "Error", "open fail", NULL);
-        //    if (errno == EBUSY && (m_flags & O_EXCL))
-        //      // device is locked
-        //      return set_err(EBUSY,
-        //        "The requested controller is used exclusively by another process!\n"
-        //        "(e.g. smartctl or smartd)\n"
-        //        "Please quit the impeding process or try again later...");
-        //    return set_err((errno==ENOENT || errno==ENOTDIR) ? ENODEV : errno);
+        
         return m_fd;
     }
 
@@ -58,9 +51,7 @@ int nvme_Device::nvmeOpen()
         if (-1 == fcntl(m_fd, F_SETFD, FD_CLOEXEC))
         {
             // TODO: Provide an error printing routine in class smart_interface
-            //    QMessageBox::information(NULL, "Error", "fcntl(set  FD_CLOEXEC) failed", NULL);
-            //qDebug()<<"fcntl(set  FD_CLOEXEC) failed";
-        //pout("fcntl(set  FD_CLOEXEC) failed, errno=%d [%s]\n", errno, strerror(errno));
+            
         }
     }
 
@@ -137,28 +128,6 @@ bool nvme_Device::nvme_read_id_ctrl(nvme_id_ctrl & id_ctrl)
     return true;
 }
 
-bool nvme_Device::nvme_read_id_ns(unsigned nsid, nvme_id_ns & id_ns)
-{
-    if (!nvme_read_identify(nsid, 0x00, &id_ns, sizeof(id_ns)))
-        return false;
-
-    if (isbigendian()) {
-        swapx(&id_ns.nsze);
-        swapx(&id_ns.ncap);
-        swapx(&id_ns.nuse);
-        swapx(&id_ns.nawun);
-        swapx(&id_ns.nawupf);
-        swapx(&id_ns.nacwu);
-        swapx(&id_ns.nabsn);
-        swapx(&id_ns.nabo);
-        swapx(&id_ns.nabspf);
-        for (int i = 0; i < 16; i++)
-            swapx(&id_ns.lbaf[i].ms);
-    }
-
-    return true;
-}
-
 bool nvme_Device::nvme_pass_through(const nvme_cmd_in & in)
 {
     nvme_cmd_out out;
@@ -189,38 +158,6 @@ bool nvme_Device::nvme_pass_through(const nvme_cmd_in & in)
 
     out.result = pt.result;
     bool ok = true;
-
-    //  if (   dont_print_serial_number && ok
-    //      && in.opcode == nvme_admin_identify && in.cdw10 == 0x01) {
-    //        // Invalidate serial number
-    //        nvme_id_ctrl & id_ctrl = *reinterpret_cast<nvme_id_ctrl *>(in.buffer);
-    //        memset(id_ctrl.sn, 'X', sizeof(id_ctrl.sn));
-    //  }
-
-    //  if (nvme_debugmode) {
-    //    if (start_usec >= 0) {
-    //      int64_t duration_usec = smi()->get_timer_usec() - start_usec;
-    //      if (duration_usec >= 500)
-    //        pout("  [Duration: %.3fs]\n", duration_usec / 1000000.0);
-    //    }
-
-    //    if (!ok) {
-    //      pout(" [NVMe call failed: ");
-    //      if (out.status_valid)
-    //        pout("NVMe Status=0x%04x", out.status);
-    //      else
-    //        pout("%s", device->get_errmsg());
-    //    }
-    //    else {
-    //      pout(" [NVMe call succeeded: result=0x%08x", out.result);
-    //      if (nvme_debugmode > 1 && in.direction() == nvme_cmd_in::data_in) {
-    //        pout("\n");
-    //        debug_hex_dump(in.buffer, in.size);
-    //        pout(" ");
-    //      }
-    //    }
-    //    pout("]\n");
-    //  }
 
     return ok;
 }

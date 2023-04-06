@@ -158,36 +158,6 @@ public:
         unsigned char   vs[1024];
     };
 
-    struct nvme_id_ns {
-        uint64_t        nsze;
-        uint64_t        ncap;
-        uint64_t        nuse;
-        unsigned char   nsfeat;
-        unsigned char   nlbaf;
-        unsigned char   flbas;
-        unsigned char   mc;
-        unsigned char   dpc;
-        unsigned char   dps;
-        unsigned char   nmic;
-        unsigned char   rescap;
-        unsigned char   fpi;
-        unsigned char   rsvd33;
-        unsigned short  nawun;
-        unsigned short  nawupf;
-        unsigned short  nacwu;
-        unsigned short  nabsn;
-        unsigned short  nabo;
-        unsigned short  nabspf;
-        unsigned char   rsvd46[2];
-        unsigned char   nvmcap[16];
-        unsigned char   rsvd64[40];
-        unsigned char   nguid[16];
-        unsigned char   eui64[8];
-        struct nvme_lbaf  lbaf[16];
-        unsigned char   rsvd192[192];
-        unsigned char   vs[3712];
-    };
-
     struct nvme_print_options
     {
         bool drive_info;
@@ -226,9 +196,6 @@ public:
     { swap4((char*)p); }
     inline void swapx(uint64_t * p)
     { swap8((char*)p); }
-
-    //void print_drive_info(const nvme_id_ctrl & id_ctrl, const nvme_id_ns & id_ns, unsigned nsid, bool show_all);
-    bool nvme_read_id_ns(unsigned nsid, nvme_id_ns & id_ns);
 
 private:
     int m_fd; ///< filedesc, -1 if not open.
