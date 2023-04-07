@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int GetNVMEIDInfo(std::string deviceStr);
+int getNVMEIDInfo(std::string deviceStr);
 const char * format_char_array(char * str, int strsize, const char * chr, int chrsize);
 template<size_t STRSIZE, size_t CHRSIZE>
 inline const char * format_char_array(char (& str)[STRSIZE], const char (& chr)[CHRSIZE])
@@ -52,7 +52,7 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-int GetNVMEIDInfo(string deviceStr)
+int getNVMEIDInfo(string deviceStr)
 {
 	nvme_Device * nvmeDev;
 	nvmeDev = new nvme_Device(deviceStr.c_str(), "", 0);
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	if (argc == 2){
 		if (args[1].find("nvme") != std::string::npos)
 		{
-			int h = GetNVMEIDInfo(args[1]);
+			int h = getNVMEIDInfo(args[1]);
 			if(h == -1){
 				cout << args[1] << " device not found. " << endl;
 			}

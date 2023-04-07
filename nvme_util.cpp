@@ -1,9 +1,10 @@
 #include "nvme_util.h"
 #include <fcntl.h>
-#include "linux_nvme_ioctl.h"
+
 #include <sys/ioctl.h>
 #include <errno.h>
 #include <string.h>
+
 #define O_RDONLY	     00
 #ifndef O_NONBLOCK
 # define O_NONBLOCK	  04000
@@ -17,9 +18,6 @@ nvme_Device::nvme_Device()
 }
 nvme_Device::nvme_Device(const char * dev_name, const char * req_type, unsigned nsid)
 {
-    nvmeopts.drive_info = true;
-    nvmeopts.smart_check_status = true;
-
     m_nsid = nsid;
     m_info.dev_name = dev_name;
     m_info.info_name = dev_name;

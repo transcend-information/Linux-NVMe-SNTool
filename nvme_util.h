@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include <linux/types.h>
+
 #ifndef NVME_UTIL_H
 #define NVME_UTIL_H
 
@@ -80,12 +82,6 @@ public:
 
     unsigned m_nsid;
 
-    struct nvme_lbaf {
-        unsigned short  ms;
-        unsigned char   ds;
-        unsigned char   rp;
-    };
-
     struct nvme_id_power_state {
         unsigned short  max_power; // centiwatts
         unsigned char   rsvd2;
@@ -158,28 +154,7 @@ public:
         unsigned char   vs[1024];
     };
 
-    struct nvme_print_options
-    {
-        bool drive_info;
-        bool drive_capabilities;
-        bool smart_check_status;
-        bool smart_vendor_attrib;
-        unsigned error_log_entries;
-        unsigned char log_page;
-        unsigned log_page_size;
-
-        nvme_print_options()
-            : drive_info(false),
-              drive_capabilities(false),
-              smart_check_status(false),
-              smart_vendor_attrib(false),
-              error_log_entries(0),
-              log_page(0),
-              log_page_size(0)
-        { }
-    };
-
-    nvme_print_options nvmeopts;
+    
     int nvmeOpen();
 
     bool nvme_read_id_ctrl(nvme_id_ctrl & id_ctrl);
@@ -211,6 +186,31 @@ inline bool isbigendian()
     return false;
 #endif
 }
+
+#define nvme_admin_cmd nvme_passthru_cmd
+#define NVME_IOCTL_ID		_IO('N', 0x40)
+#define NVME_IOCTL_ADMIN_CMD	_IOWR('N', 0x41, struct nvme_admin_cmd)
+
+struct nvme_passthru_cmd {
+    __u8	opcode;
+    __u8	flags;
+    __u16	rsvd1;
+    __u32	nsid;
+    __u32	cdw2;
+    __u32	cdw3;
+    __u64	metadata;
+    __u64	addr;
+    __u32	metadata_len;
+    __u32	data_len;
+    __u32	cdw10;
+    __u32	cdw11;
+    __u32	cdw12;
+    __u32	cdw13;
+    __u32	cdw14;
+    __u32	cdw15;
+    __u32	timeout_ms;
+    __u32	result;
+};
 
 enum nvme_admin_opcode {
     //nvme_admin_delete_sq     = 0x00,
