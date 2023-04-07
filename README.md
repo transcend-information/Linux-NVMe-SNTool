@@ -1,6 +1,6 @@
 # Linux-NVMe-SNTool
 
-  **The sample code demonstrates that get the Model Name, FW version and Serial No. of Transcend NVMe SSD. For Crestron Developer Use. **
+  **For Crestron Developer Use. The sample code demonstrates that get the Model Name, FW version and Serial No. of Transcend NVMe SSD.**
 
   **Build Guide**
   
