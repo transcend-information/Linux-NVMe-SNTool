@@ -1,5 +1,7 @@
 # Linux-NVMe-SNTool
 
+  **The sample code demonstrates that get the Model Name, FW version and Serial No. of Transcend NVMe SSD. For Crestron Developer Use. **
+
   **Build Guide**
   
   - **compile the executable file**
@@ -9,10 +11,8 @@
   - **use <chmod +x> for sure you have proper right to execute the executable file**
 
     ```$chmod +x nvme_sn_tool```\
-    ```$sudo ./nvme_sn_tool /dev/nvmeX```
-    
 #
-  **Usage**
+  - **Usage**
 
-  - **nvme_sn_tool \<device>**\
-    show specific information of the device
+  ```$sudo ./nvme_sn_tool /dev/nvmeX```
+     show specific information of the NVMe device

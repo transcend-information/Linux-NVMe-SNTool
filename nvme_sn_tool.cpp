@@ -1,5 +1,4 @@
 #include "nvme_util.h"
-#include <string>
 #include <iostream>
 #include <unistd.h>
 #include <vector>
@@ -68,32 +67,18 @@ int getNVMEIDInfo(string deviceStr)
 	const char *fwrev_str_byte;
 
 	nvmeDev->nvme_read_id_ctrl(id_ctrl);
-
-	string s1 = "---------- Disk Information ----------";
-	cout << s1 << endl;
+	cout << "---------- Disk Information ----------" << endl;
+	
 	model_str_byte = format_char_array(buf, id_ctrl.mn);
-	string s2 = "Model\t\t\t:" + std::string(model_str_byte);
-	cout << s2 << endl;
-
-	string model = std::string(model_str_byte);
+	cout << "Model\t\t\t: " + std::string(model_str_byte) << endl;
 	
 	fwrev_str_byte = format_char_array(buf, id_ctrl.fr);
-	string s3 = "FW Version\t\t:" + std::string(fwrev_str_byte);
-	cout << s3 << endl;
-
-	string fw = std::string(fwrev_str_byte);
+	cout << "FW Version\t\t: " + std::string(fwrev_str_byte) << endl;
 
 	serialno_str_byte = format_char_array(buf, id_ctrl.sn);
-	string s4 = "Serial No\t\t:" + std::string(serialno_str_byte);
-	cout << s4 << endl;
-
-	//string s5 = "Support Interface\t:NVME";
-	//cout << s5 << endl;
+	cout << "Serial No\t\t: " + std::string(serialno_str_byte) << endl;
 
 	::close(fd);
-
-	//cout << model << endl;
-	//cout << fw << endl;
 
 	return 0;
 }
@@ -102,7 +87,6 @@ void showGuide()
 {
 	cout << "Usage:" << endl;
 	cout << " " << "nvme_sn_tool <nvme_device>" << endl;
-	
 }
 
 int main(int argc, char *argv[])
@@ -116,14 +100,16 @@ int main(int argc, char *argv[])
 	if (argc == 2){
 		if (args[1].find("nvme") != std::string::npos)
 		{
-			int h = getNVMEIDInfo(args[1]);
-			if(h == -1){
-				cout << args[1] << " device not found. " << endl;
+			int resultGetDevice = getNVMEIDInfo(args[1]);
+			if(resultGetDevice == -1){
+				cout << args[1] << " Device not found. " << endl;
 			}
-		}else{
+		}
+		else{
 			showGuide();
 		}
-	}else{
+	}
+	else{
 		showGuide();
 	}
 
