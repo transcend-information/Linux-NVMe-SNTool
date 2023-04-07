@@ -10,7 +10,7 @@
     
   - **use <chmod +x> for sure you have proper right to execute the executable file**
 
-    ```$chmod +x nvme_sn_tool```\
+    ```$chmod +x nvme_sn_tool```
 #
   - **Usage**
   
